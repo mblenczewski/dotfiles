@@ -1,0 +1,10 @@
+#!/bin/sh
+
+. "$(dirname $0)/common.sh"
+
+while [ ! -d "${XDG_RUNTIME_DIR}" ]; do
+	sleep 1
+done
+
+${PULSE} --use-pid-file=true --start
+exec tail --pid="$(cat ${PULSE_RUNTIME_PATH}/pid)" -f /dev/null # wait for pulseaudio to exit
