@@ -4,4 +4,3 @@ dbus-update-activation-environment DBUS_SESSION_BUS_ADDRESS DISPLAY XAUTHORITY
 
 slstatus &
 
-dbus-launch dwm
