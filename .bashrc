@@ -1,5 +1,5 @@
 #
-# ~/.bashrc
+# ~/.shellrc
 #
 
 # If not running interactively, don't do anything
