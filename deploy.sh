@@ -25,10 +25,7 @@ rm -rf "${HOME}/.local"
 mkdir "${HOME}/.config" "${HOME}/.local"
 
 ## copy over new dotfiles
-cp ".profile" ".bashrc" "${HOME}"
-ln -s ".profile" "${HOME}/.bash_profile"
-
-cp ".xprofile" "${HOME}"
+cp ".bashrc" ".profile" ".xprofile" "${HOME}"
 ln -s ".config/xinitrc" "${HOME}/.xinitrc"
 
 cp -r ".config" "${HOME}/.config"
