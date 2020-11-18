@@ -6,18 +6,28 @@ SKEL_DIR="${XDG_CONFIG_HOME:-"${HOME}/.config"}/mktexproj/skel"
 if [ ! -d "${SKEL_DIR}" ]; then
 	mkdir -p "${SKEL_DIR}"
 	cat > "${SKEL_DIR}/document.tex" <<EOF
-\documentclass{article}
+\\documentclass{article}
+
+%\\setcounter{tocdepth}{1} % show sections
+%\\setcounter{tocdepth}{2} % + subsections
+\\setcounter{tocdepth}{3} % + subsubsections
+%\\setcounter{tocdepth}{4} % + paragraphs
+%\\setcounter{tocdepth}{5} % + subparagraphs
 
 \\author{$(whoami)}
 \\title{My Latex Document}
 
 \\begin{document}
 
-\maketitle
+\\maketitle
+\\newpage
+
+\\tableofcontents
+\\newpage
 
 Hello, World!
 
-\end{document}
+\\end{document}
 EOF
 fi
 
