@@ -1,0 +1,56 @@
+#!/bin/sh
+
+SKEL_DIR="${XDG_CONFIG_HOME:-"${HOME}/.config"}/mktexproj/skel"
+
+## initialise skeleton directory
+[ -d "${SKEL_DIR}" ] || \
+	mkdir -p "${SKEL_DIR}" && \
+	cat > "${SKEL_DIR}/document.tex" <<EOF
+\documentclass{article}
+
+\\author{$(whoami)}
+\\title{My Latex Document}
+
+\\begin{document}
+
+\maketitle
+
+Hello, World!
+
+\end{document}
+EOF
+
+help() {
+	echo "Usage: $(basename -- "$0") -h"
+	echo "-h:"
+	echo "	Displays usage information"
+	echo "-n <folder_name>:"
+	echo "	Creates a new latex project folder, with the given name."
+	echo "	Skeleton directory: ${SKEL_DIR}"
+}
+
+OPTSTRING="hn:"
+while getopts "${OPTSTRING}" OPT; do
+	case "${OPT}" in
+		h)
+			help && exit 1
+			;;
+		n)
+			[ -z "${OPTARG}" ] && \
+				echo "No project name given" && exit 1
+
+			mkdir "${OPTARG}"
+			for F in ${SKEL_DIR}/*; do
+				cp $F "${OPTARG}"
+			done
+
+			exit 0
+			;;
+		default)
+			help
+			;;
+	esac
+done
+
+echo "Incorrect usage"
+help && exit 1
