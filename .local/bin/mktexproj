@@ -2,9 +2,9 @@
 
 SKEL_DIR="${XDG_CONFIG_HOME:-"${HOME}/.config"}/mktexproj/skel"
 
-## initialise skeleton directory
-[ -d "${SKEL_DIR}" ] || \
-	mkdir -p "${SKEL_DIR}" && \
+## initialise skeleton directory if it doesnt exist
+if [ ! -d "${SKEL_DIR}" ]; then
+	mkdir -p "${SKEL_DIR}"
 	cat > "${SKEL_DIR}/document.tex" <<EOF
 \documentclass{article}
 
@@ -19,6 +19,7 @@ Hello, World!
 
 \end{document}
 EOF
+fi
 
 help() {
 	echo "Usage: $(basename -- "$0") -h"
