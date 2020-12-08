@@ -1,5 +1,11 @@
 #!/bin/sh
 
-. ~/.xprofile
+## The following line can break a vanilla Gentoo install
+#dbus-update-activation-environment DBUS_SESSION_BUS_ADDRESS DISPLAY XAUTHORITY
+
+slstatus &
 
 ssh-agent dwm
+
+exec dwm > "${HOME}/.dwm.log"
+

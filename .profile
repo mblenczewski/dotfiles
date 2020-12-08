@@ -11,7 +11,7 @@ export PATH="${PATH}:${LATEX_ROOT}/bin/x86_64-linux"
 export PATH
 
 export MAKEFLAGS="-j$(nproc)"
-COMMON_CFLAGS="-O2 -pipe -march=native -mtune=native"
+COMMON_FLAGS="-O2 -march=native -mtune=native -pipe"
 export CFLAGS="${COMMON_FLAGS}"
 export CXXFLAGS="${COMMON_FLAGS}"
 
@@ -23,7 +23,9 @@ export READER="zathura"
 export XDG_CACHE_HOME="${HOME}/.cache"
 export XDG_CONFIG_HOME="${HOME}/.config"
 export XDG_DATA_HOME="${HOME}/.local/share"
-export XDG_RUNTIME_DIR="/run/user/$(id -u)"
+export XDG_RUNTIME_DIR="${HOME}/.run"
+
+[ -d "${XDG_RUNTIME_DIR}" ] || mkdir "${XDG_RUNTIME_DIR}"
 
 export XAUTHORITY="${XDG_RUNTIME_DIR}/Xauthority"
 
