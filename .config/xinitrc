@@ -5,7 +5,8 @@
 
 slstatus &
 
-ssh-agent dwm
+## For X11 forwarding over ssh
+#ssh-agent dwm
 
-exec dwm > "${HOME}/.dwm.log"
+exec dbus-launch dwm > "${HOME}/.dwm.log"
 
