@@ -7,7 +7,6 @@ SKEL_DOC="${SKEL_DIR}/${SKEL_DOC_NAME}"
 TITLE_PLACEHOLDER="TITLE"
 AUTHOR_PLACEHOLDER="AUTHOR"
 
-DEFAULT_TITLE="My Latex Document"
 AUTHOR_FILE="${SKEL_DIR}/default_author"
 
 ## initialise skeleton directory if it doesnt exist
@@ -52,16 +51,15 @@ help() {
 	echo "-n <folder_name> :"
 	echo "	Creates a new latex project folder, with the given name."
 	echo "	Skeleton directory: ${SKEL_DIR}"
-	echo "[-t <title>] :"
+	echo "-t <title> :"
 	echo "	Sets the document title."
-	echo "	Defaults to ${DEFAULT_TITLE}"
 	echo "[-a <author>] :"
 	echo "	Sets the document author. "
-	echo "	Defaults to the contents of ${DEFAULT_AUTHOR_FILE}"
+	echo "	Defaults to the contents of ${AUTHOR_FILE}"
 }
 
 DIRNAME=
-TITLE="${DEFAULT_TITLE}"
+TITLE=
 AUTHOR="$(cat "${AUTHOR_FILE}")"
 
 OPTSTRING="ha:t:n:"
@@ -87,6 +85,9 @@ done
 
 [ "${DIRNAME}" = "" ] && \
 	echo "Incorrect usage! No project name given (see -h)!" && exit 1
+
+[ "${TITLE}" = "" ] && \
+	echo "Incorrect usage! No project title given (see -h)!" && exit 1
 
 mkdir "${DIRNAME}"
 
