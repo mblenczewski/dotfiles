@@ -77,17 +77,16 @@ while getopts "${OPTSTRING}" OPT; do
 			[ ! "${OPTARG}" = "" ] && TITLE="${OPTARG}"
 			;;
 		n)
-			if [ ! "${OPTARG}" = "" ] ; then
-				DIRNAME="${OPTARG}"
-			else
-				echo "No project name given" && exit 1
-			fi
+			[ ! "${OPTARG}" = "" ] && DIRNAME="${OPTARG}"
 			;;
 		default)
 			help
 			;;
 	esac
 done
+
+[ "${DIRNAME}" = "" ] && \
+	echo "Incorrect usage! No project name given (see -h)!" && exit 1
 
 mkdir "${DIRNAME}"
 
