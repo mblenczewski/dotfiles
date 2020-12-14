@@ -1,11 +1,21 @@
 #!/bin/sh
 
 SKEL_DIR="${XDG_CONFIG_HOME:-"${HOME}/.config"}/mktexproj/skel"
+SKEL_DOC_NAME="document.tex"
+SKEL_DOC="${SKEL_DIR}/${SKEL_DOC_NAME}"
+
+TITLE_PLACEHOLDER="TITLE"
+AUTHOR_PLACEHOLDER="AUTHOR"
+
+DEFAULT_TITLE="My Latex Document"
+AUTHOR_FILE="${SKEL_DIR}/default_author"
 
 ## initialise skeleton directory if it doesnt exist
 if [ ! -d "${SKEL_DIR}" ]; then
 	mkdir -p "${SKEL_DIR}"
-	cat > "${SKEL_DIR}/document.tex" <<EOF
+
+	## create the skeleton document if it doesnt exist
+	[ ! -f "${SKEL_DOC}" ] && cat > "${SKEL_DOC}" <<EOF
 \\documentclass{article}
 
 %\\setcounter{tocdepth}{1} % show sections
@@ -14,8 +24,8 @@ if [ ! -d "${SKEL_DIR}" ]; then
 %\\setcounter{tocdepth}{4} % + paragraphs
 %\\setcounter{tocdepth}{5} % + subparagraphs
 
-\\author{$(whoami)}
-\\title{My Latex Document}
+\\author{${AUTHOR_PLACEHOLDER}}
+\\title{${TITLE_PLACEHOLDER}}
 
 \\begin{document}
 
@@ -29,33 +39,49 @@ Hello, World!
 
 \\end{document}
 EOF
+
+	## create the default author file if it doesnt exist
+	[ ! -f "${AUTHOR_FILE}" ] && echo "$(whoami)" > "${AUTHOR_FILE}"
+
 fi
 
 help() {
 	echo "Usage: $(basename -- "$0") -h"
-	echo "-h:"
+	echo "-h :"
 	echo "	Displays usage information"
-	echo "-n <folder_name>:"
+	echo "-n <folder_name> :"
 	echo "	Creates a new latex project folder, with the given name."
 	echo "	Skeleton directory: ${SKEL_DIR}"
+	echo "[-t <title>] :"
+	echo "	Sets the document title."
+	echo "	Defaults to ${DEFAULT_TITLE}"
+	echo "[-a <author>] :"
+	echo "	Sets the document author. "
+	echo "	Defaults to the contents of ${DEFAULT_AUTHOR_FILE}"
 }
 
-OPTSTRING="hn:"
+DIRNAME=
+TITLE="${DEFAULT_TITLE}"
+AUTHOR="$(cat "${AUTHOR_FILE}")"
+
+OPTSTRING="ha:t:n:"
 while getopts "${OPTSTRING}" OPT; do
 	case "${OPT}" in
 		h)
 			help && exit 1
 			;;
+		a)
+			[ ! "${OPTARG}" = "" ] && AUTHOR="${OPTARG}"
+			;;
+		t)
+			[ ! "${OPTARG}" = "" ] && TITLE="${OPTARG}"
+			;;
 		n)
-			[ -z "${OPTARG}" ] && \
+			if [ ! "${OPTARG}" = "" ] ; then
+				DIRNAME="${OPTARG}"
+			else
 				echo "No project name given" && exit 1
-
-			mkdir "${OPTARG}"
-			for F in ${SKEL_DIR}/*; do
-				cp $F "${OPTARG}"
-			done
-
-			exit 0
+			fi
 			;;
 		default)
 			help
@@ -63,5 +89,12 @@ while getopts "${OPTSTRING}" OPT; do
 	esac
 done
 
-echo "Incorrect usage"
-help && exit 1
+mkdir "${DIRNAME}"
+
+cp "${SKEL_DOC}" "${DIRNAME}"
+
+DOC="${DIRNAME}/${SKEL_DOC_NAME}"
+
+sed -i "s/${TITLE_PLACEHOLDER}/${TITLE}/" "${DOC}"
+sed -i "s/${AUTHOR_PLACEHOLDER}/${AUTHOR}/" "${DOC}"
+
