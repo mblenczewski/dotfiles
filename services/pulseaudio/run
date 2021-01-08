@@ -1,8 +1,8 @@
 #!/bin/sh
 
-. $(dirname $0)/common.sh
+. ./common.sh
 
-while [ ! -d "${XDG_RUNTIME_DIR}" ]; do
+while [ ! -d ${XDG_RUNTIME_DIR} ]; do
 	sleep 1
 done
 

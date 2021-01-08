@@ -15,10 +15,12 @@ COMMON_FLAGS="-O2 -march=native -mtune=native -pipe"
 export CFLAGS="${COMMON_FLAGS}"
 export CXXFLAGS="${COMMON_FLAGS}"
 
-export EDITOR="nvim"
 export TERMINAL="st"
-export BROWSER="brave"
+export EDITOR="nvim"
 export READER="zathura"
+
+# for runit
+export SVDIR="${HOME}/services"
 
 export XDG_CACHE_HOME="${HOME}/.cache"
 export XDG_CONFIG_HOME="${HOME}/.config"

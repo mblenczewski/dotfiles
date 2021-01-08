@@ -1,3 +1,10 @@
+"" fetch the latest copy of vim-plug if local copy does not exist
+if !filereadable(expand($XDG_CONFIG_HOME.'/nvim/autoload/plug.vim'))
+	echo 'Missing local copy of vim-plug! Fetching latest from master!'
+	!curl -fLo "$XDG_CONFIG_HOME/nvim/autoload/plug.vim" --create-dirs
+	\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+endif
+
 call plug#begin(stdpath('data') . '/plugged')
 
 "" literally just colourschemes and a fancy status bar
@@ -24,7 +31,7 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'mattn/emmet-vim'
 
 "" linting and other language server features
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 
 "" shows git information like edited lines in the gutter
 "" usage:
@@ -35,19 +42,31 @@ Plug 'airblade/vim-gitgutter'
 call plug#end()
 
 "" general editor settings
+syntax on
+
+set lazyredraw
+
 set cc=80,120,160
 
-:set number relativenumber
+set number
+set relativenumber
 
+"" colourscheme settings
 if (has("termguicolors"))
 	set termguicolors
 endif
 
 let $NVIM_TUI_ENABLE_TRUE_COLOR = 1
 
-syntax enable
 colorscheme tender
 
 "" lightline settings
 set noshowmode "" dont show the additional `-- INSERT --` text
 let g:lightline = { 'colorscheme': 'one' }
+
+"" ale settings
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
+
+""let g:ale_lint_on_enter = 0 "" lint when a file is opened
+""let g:ale_lint_on_save = 0 "" lint when a file is saved
