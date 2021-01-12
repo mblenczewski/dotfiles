@@ -1,4 +1,5 @@
 #!/bin/sh
 
-../common.sh
+. $(dirname $0)/common.sh
+
 exec ${PULSE} --kill

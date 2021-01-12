@@ -1,8 +1,7 @@
 #!/bin/sh
 
-# this service script wont inherit our users env vars
-XDG_RUNTIME_DIR=/run/user/$(id -u)
+XDG_RUNTIME_DIR=/home/mikolaj/.run
 PULSE_RUNTIME_PATH="${XDG_RUNTIME_DIR}/pulse"
 
-PULSE_ENV="env PULSE_RUNTIME_PATH=${PULSE_RUNTIME_PATH} XDG_RUNTIME_DIR=${PULSE_RUNTIME_DIR}"
+PULSE_ENV="env PULSE_RUNTIME_PATH=${PULSE_RUNTIME_PATH} XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}"
 PULSE="${PULSE_ENV} pulseaudio"

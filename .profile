@@ -15,12 +15,10 @@ COMMON_FLAGS="-O2 -march=native -mtune=native -pipe"
 export CFLAGS="${COMMON_FLAGS}"
 export CXXFLAGS="${COMMON_FLAGS}"
 
-export TERMINAL="st"
 export EDITOR="nvim"
+export TERMINAL="st"
+export BROWSER="brave"
 export READER="zathura"
-
-# for runit
-export SVDIR="${HOME}/services"
 
 export XDG_CACHE_HOME="${HOME}/.cache"
 export XDG_CONFIG_HOME="${HOME}/.config"
@@ -42,6 +40,9 @@ export HISTSIZE=
 export HISTFILESIZE=
 
 export _JAWA_AWT_WM_NONREPARENTING=1  ##fix for java applications in dwm
+
+export SVDIR="${HOME}/services"
+[ -d "${SVDIR}" ] || mkdir "${SVDIR}"
 
 [ "$(tty)" = "/dev/tty1" ] && ! pidof Xorg > /dev/null 2>&1 && exec startx
 

@@ -13,9 +13,13 @@ mkdir "${BAKDIR}" "${BAKDIR}/.config" "${BAKDIR}/.local"
 [ -f "${HOME}/.bashrc" ] && cp "${HOME}/.bashrc" "${BAKDIR}"
 [ -f "${HOME}/.xprofile" ] && cp "${HOME}/.xprofile" "${BAKDIR}"
 [ -f "${HOME}/.xinitrc" ] && cp "${HOME}/.xinitrc" "${BAKDIR}"
+[ -d "${HOME}/services" ] && cp -r "${HOME}/services" "${BAKDIR}"
 
 cp -r "${HOME}/.config" "${BAKDIR}/.config"
 cp -r "${HOME}/.local" "${BAKDIR}/.local"
+
+# archive the backup to take up less space
+tar cfj dotfiles-$(date +%Y%m%d).tar.gz "${BAKDIR}/*"
 
 
 ## clear stale dotfiles directories
@@ -30,6 +34,8 @@ ln -sf .config/xinitrc "${HOME}/.xinitrc"
 
 cp -r .config "${HOME}"
 cp -r .local "${HOME}"
+
+cp -r services "${HOME}"
 
 
 ## post-deploy actions
