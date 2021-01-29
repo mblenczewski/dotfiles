@@ -33,8 +33,6 @@ export HISTFILE="${XDG_DATA_HOME}/history"
 export HISTSIZE=
 export HISTFILESIZE=
 
-export GPG_TTY="$(tty)"
-
 export _JAWA_AWT_WM_NONREPARENTING=1  ##fix for java applications in dwm
 
 export SVDIR="${HOME}/services"
