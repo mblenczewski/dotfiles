@@ -15,8 +15,8 @@ mkdir "$BAKDIR" "$BAKDIR/.config" "$BAKDIR/.local"
 [ -f "$HOME/.xinitrc" ] && cp "$HOME/.xinitrc" "$BAKDIR"
 [ -d "$HOME/services" ] && cp -r "$HOME/services" "$BAKDIR"
 
-cp -r "$HOME/.config" "$BAKDIR/.config"
-cp -r "$HOME/.local" "$BAKDIR/.local"
+[ -d "$HOME/.config" ] && cp -r "$HOME/.config" "$BAKDIR/.config"
+[ -d "$HOME/.local" ] && cp -r "$HOME/.local" "$BAKDIR/.local"
 
 # archive the backup to take up less space
 CURRDIR="$(pwd)"
