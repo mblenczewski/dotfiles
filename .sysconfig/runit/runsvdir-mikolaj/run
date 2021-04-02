@@ -1,4 +1,4 @@
 #!/bin/sh
 
 exec 2>&1
-exec chpst -P -umikolaj runsvdir /home/mikolaj/services
+exec su - mikolaj -c 'runsvdir -P /home/mikolaj/services'

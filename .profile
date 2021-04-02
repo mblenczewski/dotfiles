@@ -6,11 +6,6 @@ PATH="/usr/local/bin:$PATH"
 [ -d "$HOME/.local/bin" ] && PATH="$HOME/.local/bin:$PATH"
 export PATH
 
-export MAKEFLAGS="-j$(nproc)"
-COMMON_FLAGS="-O2 -march=native -mtune=native -pipe"
-export CFLAGS="$COMMON_FLAGS"
-export CXXFLAGS="$COMMON_FLAGS"
-
 export EDITOR="nvim"
 export TERMINAL="st"
 export READER="zathura"
