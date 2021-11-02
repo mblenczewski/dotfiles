@@ -1,0 +1,26 @@
+#
+# account_00
+#
+
+# Receive
+set imap_user = "$my_email_00"
+set imap_pass = "$my_pass_00"
+set folder = "imaps://$my_email_00@imap.gmail.com:993/"
+set spoolfile = "+INBOX"
+set postponed = "+[Gmail]/Drafts"
+set trash = "+[Gmail]/Trash"
+unset record
+
+# Send
+set smtp_url = "smtp://$my_email_00@smtp.gmail.com:587/"
+set smtp_pass = "$my_pass_00"
+set from = "$my_email_00"
+set realname = "$my_name_00"
+set use_from = yes
+set envelope_from = yes
+set hostname = "$my_domain_00"
+
+account-hook $folder "set imap_user=$my_email_00 imap_pass=$my_pass_00"
+
+set signature = "$XDG_CONFIG_HOME/mutt/accounts/account_00.signature"
+

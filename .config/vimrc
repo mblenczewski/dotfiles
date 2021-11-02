@@ -1,11 +1,11 @@
 "" fetch the latest copy of vim-plug if local copy does not exist
-if !filereadable(expand($XDG_CONFIG_HOME.'/nvim/autoload/plug.vim'))
-	echo 'Missing local copy of vim-plug! Fetching latest from master!'
-	!curl -fLo "$XDG_CONFIG_HOME/nvim/autoload/plug.vim" --create-dirs
-	\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+let confdir = has('nvim') ? stdpath('data') : expand('$HOME/.vim')
+if empty(glob(confdir . '/autoload/plug.vim'))
+	silent execute '!curl -fLo ' . confdir . '/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-call plug#begin(stdpath('data') . '/plugged')
+call plug#begin(confdir . '/plugged')
 
 "" literally just colourschemes and a fancy status bar
 Plug 'flazz/vim-colorschemes'
@@ -54,13 +54,14 @@ set relativenumber
 "" colourscheme settings
 if (has("termguicolors"))
 	set termguicolors
+	let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+	let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
-
-let $NVIM_TUI_ENABLE_TRUE_COLOR = 1
 
 colorscheme tender
 
 "" lightline settings
+set laststatus=2
 set noshowmode "" dont show the additional `-- INSERT --` text
 let g:lightline = { 'colorscheme': 'one' }
 

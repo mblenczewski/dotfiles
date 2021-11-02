@@ -3,6 +3,15 @@
 ## The following line can break a vanilla Gentoo install
 #dbus-update-activation-environment DBUS_SESSION_BUS_ADDRESS DISPLAY XAUTHORITY
 
+pkill mpd
+mpd
+
+pkill ddnsu
+DDNS_USER="$(cat $XDG_CONFIG_HOME/ddns.user.conf)"
+DDNS_PASS="$(cat $XDG_CONFIG_HOME/ddns.pass.conf)"
+DDNS_DOMAIN="$(cat $XDG_CONFIG_HOME/ddns.domain.conf)"
+ddnsu $DDNS_USER $DDNS_PASS $DDNS_DOMAIN >/dev/null &
+
 xautolock -time 10 -locker slock &
 
 slstatus &

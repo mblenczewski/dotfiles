@@ -6,24 +6,20 @@ BAKDIR="$HOME/dotfiles.bak"
 [ -d "$BAKDIR" ] && rm -rf "$BAKDIR"
 mkdir "$BAKDIR" "$BAKDIR/.config" "$BAKDIR/.local"
 
-
 ## backup previous dotfiles
 [ -f "$HOME/.profile" ] && cp "$HOME/.profile" "$BAKDIR"
 [ -f "$HOME/.bash_profile" ] && cp "$HOME/.bash_profile" "$BAKDIR"
 [ -f "$HOME/.bashrc" ] && cp "$HOME/.bashrc" "$BAKDIR"
-[ -f "$HOME/.xprofile" ] && cp "$HOME/.xprofile" "$BAKDIR"
 [ -f "$HOME/.xinitrc" ] && cp "$HOME/.xinitrc" "$BAKDIR"
+[ -f "$HOME/.vimrc" ] && cp "$HOME/.vimrc" "$BAKDIR"
+[ -f "$HOME/.muttrc" ] && cp "$HOME/.muttrc" "$BAKDIR"
 [ -d "$HOME/services" ] && cp -r "$HOME/services" "$BAKDIR"
 
 [ -d "$HOME/.config" ] && cp -r "$HOME/.config" "$BAKDIR/.config"
 [ -d "$HOME/.local" ] && cp -r "$HOME/.local" "$BAKDIR/.local"
 
 # archive the backup to take up less space
-CURRDIR="$(pwd)"
-cd "$BAKDIR"
-tar cfj "$HOME/dotfiles-$(date +%Y%m%d).tar.gz" $(find)
-cd "$CURRDIR"
-
+tar cjf "$HOME/dotfiles-$(date +%Y%m%d).tar.bz2" $BAKDIR
 
 ## clear stale dotfiles directories
 rm -rf "$HOME/.config" "$HOME/.local"
@@ -35,6 +31,8 @@ cp .shellrc .profile "$HOME"
 ln -sf .profile "$HOME/.bash_profile"
 ln -sf .shellrc "$HOME/.bashrc"
 ln -sf .config/xinitrc "$HOME/.xinitrc"
+ln -sf .config/vimrc "$HOME/.vimrc"
+ln -sf .config/muttrc "$HOME/.muttrc"
 
 cp -r .config "$HOME"
 cp -r .local "$HOME"
