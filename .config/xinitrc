@@ -16,8 +16,4 @@ xautolock -time 10 -locker slock &
 
 slstatus &
 
-## For X11 forwarding over ssh
-#ssh-agent dwm
-
 exec dbus-launch dwm > "${HOME}/.dwm.log"
-

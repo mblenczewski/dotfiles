@@ -2,11 +2,15 @@
 # ~/.profile
 #
 
-PATH="/usr/local/bin:$PATH"
+TLROOT="/usr/local/texlive/2021"
+PATH="$TLROOT/bin/x86_64-linux:$PATH"
+MANPATH="$TLROOT/texmf-dist/doc/man:$MANPATH"; export MANPATH
+INFOPATH="$TLROOT/texmf-dist/doc/info:$INFOPATH"; export INFOPATH
+
 [ -d "$HOME/.local/bin" ] && PATH="$HOME/.local/bin:$PATH"
 export PATH
 
-export EDITOR="nvim"
+export EDITOR="vim"
 export TERMINAL="st"
 export READER="zathura"
 
@@ -17,7 +21,7 @@ export XDG_RUNTIME_DIR="$HOME/.run"
 
 [ -d "$XDG_RUNTIME_DIR" ] || mkdir "$XDG_RUNTIME_DIR"
 
-export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
+export XAUTHORITY="$HOME/.Xauthority"
 
 IRCROOT="$XDG_CONFIG_HOME"
 [ -f "$IRCROOT/ircuser" ] && export IRCUSER="$(cat $IRCROOT/ircuser)"
@@ -34,5 +38,6 @@ export _JAWA_AWT_WM_NONREPARENTING=1  ##fix for java applications in dwm
 export SVDIR="$HOME/services"
 [ -d "$SVDIR" ] || mkdir "$SVDIR"
 
-[ "$(tty)" = "/dev/tty1" ] && ! pidof Xorg > /dev/null 2>&1 && exec startx
+export PATH="$HOME/vulkan/1.2.170.0/x86_64/bin:$PATH"
 
+[ "$(tty)" = "/dev/tty1" ] && ! pidof Xorg >/dev/null 2>&1 && exec startx
