@@ -1,0 +1,71 @@
+#!/bin/sh
+
+USAGE() {
+	echo "Usage: $0 [-o <output>] [-s <stream-url.gpg>]"
+	echo "  -h: Print usage information"
+	echo "  -a: Use the given audio codec (default: libvorbis)"
+	echo "  -d: Record the given display (default: $DISPLAY)"
+	echo "  -f: Record the screen with the given framerate (default: 30)"
+	echo "  -i: Use the given audio input (default: default)"
+	echo "  -o: Output to the given file"
+	echo "  -s: Stream the screen capture to url in the given gpg2-encrypted file (ignores any -o options)"
+	echo "      This option will require the -a and -v options, depending on the streaming service"
+	echo "  -v: Output using the given container format (default: guessed)"
+}
+
+while getopts ":h:a:d:f:i:o:s:v:" cmdarg; do
+	case "$cmdarg" in
+		h)
+			USAGE
+			exit 1
+			;;
+		a)
+			ACODEC="$OPTARG"
+			;;
+		d)
+			CAPTURE="$OPTARG"
+			;;
+		f)
+			FRAMERATE="$OPTARG"
+			;;
+		i)
+			AINPUT="$OPTARG"
+			;;
+
+		o)
+			OUTPUT="$OPTARG"
+			;;
+		s)
+			STREAMURL="$OPTARG"
+			;;
+		v)
+			CONTAINER="$OPTARG"
+			;;
+		*)
+			echo "Unknown option: $cmdarg"
+			USAGE
+			exit 1
+			;;
+	esac
+done
+
+if [ "${STREAMURL:-z}" = "z" ]; then
+	[ "${OUTPUT:-z}" = "z" ] && echo "Missing output file!" && USAGE && exit 1
+else
+	OUTPUT="$(gpg2 -dq $STREAMURL)"
+fi
+
+[ ! "${CONTAINER:-z}" = "z" ] && OUTPUT="-f $CONTAINER $OUTPUT"
+
+# NOTE: change /dev/dri/renderD128 to whatever your main GPU shows up as
+ACCEL_DEV="-init_hw_device vaapi=gpu:/dev/dri/renderD128 -hwaccel vaapi -hwaccel_output_format vaapi -hwaccel_device gpu"
+ACCEL_OPTS="-filter_hw_device gpu -vf format=nv12|vaapi,hwupload"
+AUDIO_OPTS="-f alsa -ac 2 -i ${AINPUT:-default}" # pulse produces massive lag on my machine :(
+VIDEO_OPTS="-f x11grab -video_size 1920x1080 -framerate ${FRAMERATE:-30} -i ${CAPTURE:-$DISPLAY}"
+CODEC_OPTS="-c:v h264_vaapi -b:v 8M -qp 19 -bf 0 -c:a ${ACODEC:-libvorbis} -af aresample=44100"
+
+# NOTE: feel free to remove DRI_PRIME=1 and LIBVA_DRIVER_NAME=radeonsi
+#       as these are only useful on systems with multiple gpus (with
+#       a discrete AMD gpu)
+DRI_PRIME=1 LIBVA_DRIVER_NAME=radeonsi \
+ffmpeg -y $ACCEL_DEV $VIDEO_OPTS $AUDIO_OPTS $ACCEL_OPTS $CODEC_OPTS $OUTPUT
