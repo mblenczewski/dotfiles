@@ -2,29 +2,29 @@
 # account_02
 #
 
-# Receive
-set imap_user = "$my_email_02"
-set imap_pass = "$my_pass_02"
-set folder = "imaps://$my_email_02@outlook.office365.com:993/"
+set folder = "~/.local/share/email/personal2"
+set sendmail = "msmtp -a enderrifter@gmail.com"
+
+mailboxes =INBOX =Important =Starred =Drafts =Sent =Trash =Spam
+
 set spoolfile = "+INBOX"
 set postponed = "+Drafts"
+set record = "+Sent"
 set trash = "+Trash"
-unset record
 
-# Send
-set smtp_authenticators = "login"
-set smtp_url = "smtp://$my_email_02@outlook.office365.com:587/"
-set smtp_pass = "$my_pass_02"
-set from = "$my_email_02"
-set realname = "$my_name_02"
+set from = "enderrifter@gmail.com"
+set realname = "Mikołaj Lenczewski"
 set use_from = yes
 set envelope_from = yes
-set hostname = "$my_domain_02"
-
-set ssl_use_tlsv1 = yes
-set ssl_use_sslv3 = yes
-
-account-hook $folder "set imap_user=$my_email_02 imap_pass=$my_pass_02"
+set hostname = "gmail.com"
 
 set signature = "$XDG_CONFIG_HOME/mutt/accounts/account_02.signature"
 
+# fetching mail
+macro index,pager \Cf "<shell-escape>mbsync personal2<enter>" "synchronise mailbox"
+
+# navigation
+macro index,pager gi "<change-folder>=INBOX<enter>" "go to inbox"
+macro index,pager gd "<change-folder>=Drafts<enter>" "go to drafts"
+macro index,pager gs "<change-folder>=Sent<enter>" "go to sent mail"
+macro index,pager gt "<change-folder>=Trash<enter>" "go to trash"

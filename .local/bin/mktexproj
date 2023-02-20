@@ -1,75 +1,23 @@
 #!/bin/sh
 
-SKEL_DIR="${XDG_CONFIG_HOME:-"${HOME}/.config"}/mktexproj/skel"
-SKEL_DOC_NAME="document.tex"
-SKEL_DOC="${SKEL_DIR}/${SKEL_DOC_NAME}"
-
-TITLE_PLACEHOLDER="TITLE"
-AUTHOR_PLACEHOLDER="AUTHOR"
-
-AUTHOR_FILE="${SKEL_DIR}/default_author"
-
-## initialise skeleton directory if it doesnt exist
-if [ ! -d "${SKEL_DIR}" ]; then
-	mkdir -p "${SKEL_DIR}"
-
-	## create the skeleton document if it doesnt exist
-	[ ! -f "${SKEL_DOC}" ] && cat > "${SKEL_DOC}" <<EOF
-\\documentclass{article}
-
-%\\setcounter{tocdepth}{1} % show sections
-%\\setcounter{tocdepth}{2} % + subsections
-\\setcounter{tocdepth}{3} % + subsubsections
-%\\setcounter{tocdepth}{4} % + paragraphs
-%\\setcounter{tocdepth}{5} % + subparagraphs
-
-\\author{${AUTHOR_PLACEHOLDER}}
-\\title{${TITLE_PLACEHOLDER}}
-
-\\begin{document}
-
-\\maketitle
-\\newpage
-
-\\tableofcontents
-\\newpage
-
-Hello, World!
-
-\\end{document}
-EOF
-
-	## create the default author file if it doesnt exist
-	[ ! -f "${AUTHOR_FILE}" ] && echo "$(whoami)" > "${AUTHOR_FILE}"
-
-fi
-
 help() {
 	echo "Usage: $(basename -- "$0") -h"
 	echo "-h :"
 	echo "	Displays usage information"
 	echo "-n <folder_name> :"
 	echo "	Creates a new latex project folder, with the given name."
-	echo "	Skeleton directory: ${SKEL_DIR}"
 	echo "-t <title> :"
 	echo "	Sets the document title."
-	echo "[-a <author>] :"
-	echo "	Sets the document author. "
-	echo "	Defaults to the contents of ${AUTHOR_FILE}"
 }
 
 DIRNAME=
 TITLE=
-AUTHOR="$(cat "${AUTHOR_FILE}")"
 
-OPTSTRING="ha:t:n:"
+OPTSTRING="ht:n:"
 while getopts "${OPTSTRING}" OPT; do
 	case "${OPT}" in
 		h)
 			help && exit 1
-			;;
-		a)
-			[ ! "${OPTARG}" = "" ] && AUTHOR="${OPTARG}"
 			;;
 		t)
 			[ ! "${OPTARG}" = "" ] && TITLE="${OPTARG}"
@@ -89,12 +37,57 @@ done
 [ "${TITLE}" = "" ] && \
 	echo "Incorrect usage! No project title given (see -h)!" && exit 1
 
-mkdir "${DIRNAME}"
+mkdir -p "$DIRNAME"
 
-cp "${SKEL_DOC}" "${DIRNAME}"
+## create the skeleton document if it doesnt exist
+cat > "$DIRNAME/document.tex" <<EOF
+\\documentclass{article}
 
-DOC="${DIRNAME}/${SKEL_DOC_NAME}"
+\\usepackage[utf8]{inputenc}
+\\usepackage{amsmath}
+\\usepackage{listings}
 
-sed -i "s/${TITLE_PLACEHOLDER}/${TITLE}/" "${DOC}"
-sed -i "s/${AUTHOR_PLACEHOLDER}/${AUTHOR}/" "${DOC}"
+\\setcounter{tocdepth}{1} % show sections
+\\setcounter{tocdepth}{2} % + subsections
+\\setcounter{tocdepth}{3} % + subsubsections
+%\\setcounter{tocdepth}{4} % + paragraphs
+%\\setcounter{tocdepth}{5} % + subparagraphs
 
+\\author{Mikołaj Lenczewski}
+\\title{$TITLE}
+
+\\begin{document}
+
+\\maketitle
+\\newpage
+
+\\tableofcontents
+\\newpage
+
+Hello, World!
+
+\\end{document}
+EOF
+
+## create the build script
+cat > "$DIRNAME/build" <<'EOF'
+#!/bin/sh
+
+. "$(dirname $0)/common.sh"
+
+pdflatex "$OPTS" "$SRC"
+EOF
+
+chmod +x "$DIRNAME/build"
+
+## create the build options script
+cat > "$DIRNAME/common.sh" <<EOF
+#!/bin/sh
+
+export ROOT="$(dirname $0)"
+export OUT="$ROOT/out"
+export OPTS="-output-directory=\$OUT"
+export SRC="$ROOT/document.tex"
+
+[ ! -d \$OUT ] && mkdir \$OUT
+EOF

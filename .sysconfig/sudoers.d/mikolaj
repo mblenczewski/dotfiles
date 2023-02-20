@@ -1,5 +1,0 @@
-Cmnd_Alias WITHOUT_PASSWD = /usr/sbin/reboot, /usr/sbin/poweroff
-mikolaj ALL = (ALL) NOPASSWD: WITHOUT_PASSWD
-
-Cmnd_Alias PULSEAUDIO = /usr/bin/pactl, /usr/bin/pamixer
-mikolaj ALL = (pulseaudio) NOPASSWD: PULSEAUDIO

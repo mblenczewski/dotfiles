@@ -71,3 +71,13 @@ let g:ale_lint_on_insert_leave = 0
 
 ""let g:ale_lint_on_enter = 0 "" lint when a file is opened
 ""let g:ale_lint_on_save = 0 "" lint when a file is saved
+let g:ale_enabled = 0
+
+"" key remapping
+"" faster (v)split creation/navigation
+:nnoremap <C-V> <C-W>v
+:nnoremap <C-S> <C-W>s
+:nnoremap <C-H> <C-W>h
+:nnoremap <C-J> <C-W>j
+:nnoremap <C-K> <C-W>k
+:nnoremap <C-L> <C-W>l

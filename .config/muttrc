@@ -1,35 +1,39 @@
-source "gpg2 -dq $XDG_CONFIG_HOME/mutt/accounts/secrets.gpg |"
-
-# SSL / TLS settings
-set ssl_force_tls = yes
-set ssl_starttls = yes
-set ssl_use_sslv2 = no
-set ssl_use_sslv3 = no
-set ssl_use_tlsv1 = no
-set ssl_use_tlsv1_1 = no
-set ssl_use_tlsv1_2 = no
-set ssl_use_tlsv1_3 = yes
-set ssl_verify_dates = yes
-set ssl_verify_host = yes
+# vim: filetype=muttrc
+# viewing and attachments
+auto_view application/pgp-encrypted
+auto_view text/html
+alternative_order text/plain text/enriched text/html
+bind attach <return> view-mailcap
 
 # general settings
 set charset = "utf-8"
 set send_charset = "utf-8"
 set assumed_charset = "iso-8859-1"
+
 set editor = "vim -c 'set syntax=mail ft=mail enc=utf-8'"
-set header_cache = "$XDG_CONFIG_HOME/mutt"
-set imap_keepalive = 300
-set imap_passive = no
-set imap_check_subscribed = yes
-set imap_idle = yes
-set mail_check = 60
-set mbox_type = Maildir
+
+set rfc2047_parameters = yes
+
+set wait_key = no # dont ask "Press key to continue"
+set sleep_time = 0 # dont pause to show informational messages
+set markers = no # dont wrap long links with +
+set mark_old = no # unread email stays unread until opened
+set mime_forward = yes # attachments are forwarded with email body
+set fast_reply = yes # skip to composing a reply
+set fcc_attach = yes # save attachments with email body
+set forward_format = "Fwd: %s" # set the subject format for forwarded emails
+set forward_quote = yes # include message in forwarded emails
+set reverse_name = yes # include the senders name in replies
+set reverse_realname = yes # include the senders real name in replies
+set include = yes # include the original message in replies
+
 set sort = threads
 set sort_aux = reverse-last-date-received
 set strict_threads = yes
-set reverse_name = yes
-set reverse_realname = yes
-set wait_key = no
+
+set header_cache = "$XDG_CACHE_HOME/email/header_cache"
+
+set mbox_type = Maildir
 
 # status bar settings
 set status_chars = " *%A"
@@ -54,31 +58,21 @@ bind index,pager B sidebar-toggle-visible
 # set default account to load on startup
 source "$XDG_CONFIG_HOME/mutt/accounts/account_00"
 
-# folder hooks to load accounts. must be one for each account
-folder-hook "account_00" "source $XDG_CONFIG_HOME/mutt/accounts/account_00"
-folder-hook "account_01" "source $XDG_CONFIG_HOME/mutt/accounts/account_01"
-folder-hook "account_02" "source $XDG_CONFIG_HOME/mutt/accounts/account_02"
-folder-hook "account_03" "source $XDG_CONFIG_HOME/mutt/accounts/account_03"
-folder-hook "account_04" "source $XDG_CONFIG_HOME/mutt/accounts/account_04"
-
 # macros to change between accounts
-macro index,pager <F5> "<sync-mailbox><imap-logout-all><enter-command>source $XDG_CONFIG_HOME/mutt/reset-account<enter><enter-command>source $XDG_CONFIG_HOME/mutt/accounts/account_00<enter><change-folder>!<enter>" "goto account 00"
-macro index,pager <F6> "<sync-mailbox><imap-logout-all><enter-command>source $XDG_CONFIG_HOME/mutt/reset-account<enter><enter-command>source $XDG_CONFIG_HOME/mutt/accounts/account_01<enter><change-folder>!<enter>" "goto account 01"
-macro index,pager <F7> "<sync-mailbox><imap-logout-all><enter-command>source $XDG_CONFIG_HOME/mutt/reset-account<enter><enter-command>source $XDG_CONFIG_HOME/mutt/accounts/account_02<enter><change-folder>!<enter>" "goto account 02"
-macro index,pager <F8> "<sync-mailbox><imap-logout-all><enter-command>source $XDG_CONFIG_HOME/mutt/reset-account<enter><enter-command>source $XDG_CONFIG_HOME/mutt/accounts/account_03<enter><change-folder>!<enter>" "goto account 03"
-macro index,pager <F9> "<sync-mailbox><imap-logout-all><enter-command>source $XDG_CONFIG_HOME/mutt/reset-account<enter><enter-command>source $XDG_CONFIG_HOME/mutt/accounts/account_04<enter><change-folder>!<enter>" "goto account 04"
-
-# macro to refetch mail
-bind index,pager "\Cg" imap-fetch-mail
+macro index,pager <F5> "<sync-mailbox><enter-command>source $XDG_CONFIG_HOME/mutt/reset-account<enter><enter-command>source $XDG_CONFIG_HOME/mutt/accounts/account_00<enter><change-folder>!<enter>" "goto account 00"
+macro index,pager <F6> "<sync-mailbox><enter-command>source $XDG_CONFIG_HOME/mutt/reset-account<enter><enter-command>source $XDG_CONFIG_HOME/mutt/accounts/account_01<enter><change-folder>!<enter>" "goto account 01"
+macro index,pager <F7> "<sync-mailbox><enter-command>source $XDG_CONFIG_HOME/mutt/reset-account<enter><enter-command>source $XDG_CONFIG_HOME/mutt/accounts/account_02<enter><change-folder>!<enter>" "goto account 02"
+macro index,pager <F8> "<sync-mailbox><enter-command>source $XDG_CONFIG_HOME/mutt/reset-account<enter><enter-command>source $XDG_CONFIG_HOME/mutt/accounts/account_03<enter><change-folder>!<enter>" "goto account 03"
+macro index,pager <F9> "<sync-mailbox><enter-command>source $XDG_CONFIG_HOME/mutt/reset-account<enter><enter-command>source $XDG_CONFIG_HOME/mutt/accounts/account_04<enter><change-folder>!<enter>" "goto account 04"
 
 # vim keys
 bind pager j next-line
 bind pager k previous-line
 bind attach,index,pager \CD next-page
 bind attach,index,pager \CU previous-page
-bind pager g top
+bind pager gg top
 bind pager G bottom
-bind attach,index g first-entry
+bind attach,index gg first-entry
 bind attach,index G last-entry
 
 source ~/.aliases
@@ -100,7 +94,7 @@ mono indicator reverse
 mono error bold
 color normal default default
 color indicator brightblack white
-color sidebar_highlight red default
+color sidebar_highlight cyan default
 color sidebar_divider brightblack black
 color sidebar_flagged red black
 color sidebar_new green black

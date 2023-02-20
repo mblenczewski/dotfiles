@@ -1,0 +1,197 @@
+SyncState *
+Create Both
+Expunge Both
+MaxMessages 0
+
+IMAPAccount professional
+User mblenczewski@gmail.com
+PassCmd "pass mblenczewski@gmail.com"
+Host imap.gmail.com
+Port 993
+SSLType IMAPS
+
+IMAPAccount personal
+User mikolaj.lenczewski308@gmail.com
+PassCmd "pass mikolaj.lenczewski308@gmail.com"
+Host imap.gmail.com
+Port 993
+SSLType IMAPS
+
+IMAPAccount personal2
+User enderrifter@gmail.com
+PassCmd "pass enderrifter@gmail.com"
+Host imap.gmail.com
+Port 993
+SSLType IMAPS
+
+IMAPAccount university
+User mikolaj.lenczewski@student.manchester.ac.uk
+PassCmd "pass mikolaj.lenczewski@student.manchester.ac.uk"
+Host outlook.office365.com
+Port 993
+SSLType IMAPS
+
+IMAPStore professional-remote
+Account professional
+
+MaildirStore professional-local
+Subfolders Verbatim
+Path /home/mikolaj/.local/share/email/professional/
+Inbox /home/mikolaj/.local/share/email/professional/INBOX
+
+Channel professional-inbox
+Far :professional-remote:INBOX
+Near :professional-local:INBOX
+
+Channel professional-important
+Far :professional-remote:"[Gmail]/Important"
+Near :professional-local:Important
+
+Channel professional-starred
+Far :professional-remote:"[Gmail]/Starred"
+Near :professional-local:Starred
+
+Channel professional-drafts
+Far :professional-remote:"[Gmail]/Drafts"
+Near :professional-local:Drafts
+
+Channel professional-sent
+Far :professional-remote:"[Gmail]/Sent Mail"
+Near :professional-local:Sent
+
+Channel professional-trash
+Far :professional-remote:"[Gmail]/Bin"
+Near :professional-local:Trash
+
+Channel professional-spam
+Far :professional-remote:"[Gmail]/Spam"
+Near :professional-local:Spam
+
+Group professional
+Channel professional-inbox
+Channel professional-important
+Channel professional-starred
+Channel professional-drafts
+Channel professional-sent
+Channel professional-trash
+Channel professional-spam
+
+IMAPStore personal-remote
+Account personal
+
+MaildirStore personal-local
+Subfolders Verbatim
+Path /home/mikolaj/.local/share/email/personal/
+Inbox /home/mikolaj/.local/share/email/personal/INBOX
+
+Channel personal-inbox
+Far :personal-remote:INBOX
+Near :personal-local:INBOX
+
+Channel personal-important
+Far :personal-remote:"[Gmail]/Important"
+Near :personal-local:Important
+
+Channel personal-starred
+Far :personal-remote:"[Gmail]/Starred"
+Near :personal-local:Starred
+
+Channel personal-drafts
+Far :personal-remote:"[Gmail]/Drafts"
+Near :personal-local:Drafts
+
+Channel personal-sent
+Far :personal-remote:"[Gmail]/Sent Mail"
+Near :personal-local:Sent
+
+Channel personal-trash
+Far :personal-remote:"[Gmail]/Bin"
+Near :personal-local:Trash
+
+Channel personal-spam
+Far :personal-remote:"[Gmail]/Spam"
+Near :personal-local:Spam
+
+Group personal
+Channel personal-inbox
+Channel personal-important
+Channel personal-starred
+Channel personal-drafts
+Channel personal-sent
+Channel personal-trash
+Channel personal-spam
+
+IMAPStore personal2-remote
+Account personal2
+
+MaildirStore personal2-local
+Subfolders Verbatim
+Path /home/mikolaj/.local/share/email/personal2/
+Inbox /home/mikolaj/.local/share/email/personal2/INBOX
+
+Channel personal2-inbox
+Far :personal2-remote:INBOX
+Near :personal2-local:INBOX
+
+Channel personal2-important
+Far :personal2-remote:"[Gmail]/Important"
+Near :personal2-local:Important
+
+Channel personal2-starred
+Far :personal2-remote:"[Gmail]/Starred"
+Near :personal2-local:Starred
+
+Channel personal2-drafts
+Far :personal2-remote:"[Gmail]/Drafts"
+Near :personal2-local:Drafts
+
+Channel personal2-sent
+Far :personal2-remote:"[Gmail]/Sent Mail"
+Near :personal2-local:Sent
+
+Channel personal2-trash
+Far :personal2-remote:"[Gmail]/Trash"
+Near :personal2-local:Trash
+
+Channel personal2-spam
+Far :personal2-remote:"[Gmail]/Spam"
+Near :personal2-local:Spam
+
+Group personal2
+Channel personal2-inbox
+Channel personal2-important
+Channel personal2-starred
+Channel personal2-drafts
+Channel personal2-sent
+Channel personal2-trash
+Channel personal2-spam
+
+IMAPStore university-remote
+Account university
+
+MaildirStore university-local
+Subfolders Verbatim
+Path /home/mikolaj/.local/share/email/university/
+Inbox /home/mikolaj/.local/share/email/university/INBOX
+
+Channel university-inbox
+Far :university-remote:INBOX
+Near :university-local:INBOX
+
+Channel university-drafts
+Far :university-remote:Drafts
+Near :university-local:Drafts
+
+Channel university-sent
+Far :university-remote:Sent
+Near :university-local:Sent
+
+Channel university-trash
+Far :university-remote:Trash
+Near :university-local:Trash
+
+Group university
+Channel university-inbox
+Channel university-drafts
+Channel university-sent
+Channel university-trash

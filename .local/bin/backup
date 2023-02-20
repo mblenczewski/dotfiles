@@ -1,0 +1,43 @@
+#!/bin/sh
+
+DATESTAMP=$(date +%Y%m%d)
+
+OPTS="cfJ"
+EXT="xz"
+
+INCLUDED_DIRS=".*(bin|Downloads|latex|git|services)$"
+INCLUDED_FILES=".*\.(md|pdf|png|config|py)$"
+EXCLUDED_DIRS=""
+EXCLUDED_FILES=""
+
+OLD=$(pwd)
+INCLUDED=$(mktemp)
+EXCLUDED=$(mktemp)
+
+EXIT () {
+	rm $INCLUDED $EXCLUDED
+	cd $OLD
+	exit $1
+}
+
+cd $HOME
+
+find . -maxdepth 1 -type d -regextype posix-egrep -regex $INCLUDED_DIRS -print >> $INCLUDED
+find . -maxdepth 1 -type f -regextype posix-egrep -regex $INCLUDED_FILES -print >> $INCLUDED
+
+for DIR in $EXCLUDED_DIRS; do
+	sed "/$DIR/d" -i $INCLUDED
+done
+
+for FILE in $EXCLUDED_FILES; do
+	sed "/$FILE/d" -i $INCLUDED
+done
+
+if [ ! "${INCLUDED:-x}" = "x" ]; then
+	tar cfJ "$HOME/backup-$DATESTAMP.tar.$EXT" -T $INCLUDED --backup=numbered
+	# TODO(mikolaj): encrypt and sign the resulting backup file
+	EXIT 0
+else
+	echo "No files selected to back up!"
+	EXIT 1
+fi

@@ -1,0 +1,5 @@
+application/pdf; $READER %s;
+application/pgp-encrypted; gpg2 -d '%s'; copiousoutput;
+application/pgp-keys; gpg2 --import '%s'; copiousoutput;
+text/plain; $EDITOR %s;
+text/html; w3m -I %{charset} -T text/html; copiousoutput;

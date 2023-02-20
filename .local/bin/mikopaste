@@ -1,0 +1,5 @@
+#!/bin/sh
+
+for f in $@; do
+	scp "$f" "raspi:/var/www/mblenczewski.com/pastebin/$(basename $f)"
+done
