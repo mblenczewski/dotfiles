@@ -1,0 +1,6 @@
+#!/bin/sh
+
+rm -f $XDG_RUNTIME_DIR/somebar-*
+
+statbar-wl &
+exec dwl -s somebar

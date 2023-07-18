@@ -31,4 +31,5 @@ export HISTFILESIZE=
 
 export _JAWA_AWT_WM_NONREPARENTING=1  ##fix for java applications in dwm
 
-[ "$(tty)" = "/dev/tty1" ] && ! pidof Xorg >/dev/null 2>&1 && exec startx
+pkill mpd
+mpd
