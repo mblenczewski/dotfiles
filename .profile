@@ -2,8 +2,12 @@
 # ~/.profile
 #
 
+TLROOT="/usr/local/texlive/2021"
+PATH="$TLROOT/bin/x86_64-linux:$PATH"
+MANPATH="$TLROOT/texmf-dist/doc/man:$MANPATH"; export MANPATH
+INFOPATH="$TLROOT/texmf-dist/doc/info:$INFOPATH"; export INFOPATH
+
 [ -d "$HOME/.local/bin" ] && PATH="$HOME/.local/bin:$PATH"
-[ -d "$HOME/bin" ] && PATH="$HOME/bin:$PATH"
 export PATH
 
 export EDITOR="vim"
@@ -29,7 +33,9 @@ export HISTFILE="$XDG_DATA_HOME/history"
 export HISTSIZE=
 export HISTFILESIZE=
 
-export _JAWA_AWT_WM_NONREPARENTING=1  ##fix for java applications in dwm
+export _JAWA_AWT_WM_NONREPARENTING=1  ## fix for java applications in dwm
+export GDK_BACKEND=x11 ## fix for surf under Xwayland
 
-pkill mpd
-mpd
+$(pgrep mpd >/dev/null) || mpd
+
+# [ "$(tty)" = "/dev/tty1" ] && ! pidof Xorg >/dev/null 2>&1 && exec startx
